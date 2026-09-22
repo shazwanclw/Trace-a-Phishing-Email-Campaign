@@ -60,7 +60,7 @@ The attack involved dual delivery vectors: direct domain spoofing failing transp
 | Parameter | Record Details |
 | :--- | :--- |
 | **Ticket Identifier** | `CLD-0002` (Reported Phishing Impersonating Cloudora HR) |
-| **Incident Report ID** | `CLD-IR-0002` ([Full Incident Report](./Report/CLD-IR-0002_Incident_Report.md)) |
+| **Incident Report ID** | `CLD-IR-0002` ([Markdown Report](./Report/CLD-IR-0002_Incident_Report.md) / [PDF Report](./Report/CLD-IR-0002_Incident_Report.pdf)) |
 | **Incident Severity** | **P1 - Critical** (Active Cloud Account Takeover & Data Exposure) |
 | **Impacted Organization** | Cloudora (150-user B2B HR Software Provider) |
 | **Compromised Accounts** | `freya.lynn@cloudora.io`, `ryan.boyd@cloudora.io` |
@@ -301,7 +301,8 @@ Reply-To       hr-support@cloudora-hr-portal.example  Attacker Extraction Mailbo
 │   ├── 07_detection_analytic_rule.kql    # Task 4: Detection rule for click-to-foreign-login
 │   └── README.md                         # Query catalog and ingestion guide
 ├── Report/
-│   └── CLD-IR-0002_Incident_Report.md    # Formal SOC incident report (CLD-IR-TEMPLATE format)
+│   ├── CLD-IR-0002_Incident_Report.md    # Formal SOC incident report (Markdown)
+│   └── CLD-IR-0002_Incident_Report.pdf   # Formatted executive incident report (PDF)
 ├── Screenshots/
 │   ├── 01 Scope the Campaign.png
 │   ├── 02 Everyone who clicked.png
