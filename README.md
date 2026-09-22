@@ -1,10 +1,4 @@
-# Cloudora Security Operations | Payroll Phishing Campaign Investigation
-
-[![Incident Severity: P1 Critical](https://img.shields.io/badge/Severity-P1%20Critical-red.svg)](https://github.com/)
-[![Log Telemetry: Microsoft Defender / Entra ID](https://img.shields.io/badge/Telemetry-Exchange%20%7C%20Entra%20ID-blue.svg)](https://github.com/)
-[![Investigation Tool: KQL / ADX](https://img.shields.io/badge/Hunting-KQL%20%2F%20Azure%20Data%20Explorer-0078D4.svg)](https://github.com/)
-[![Framework: MITRE ATT&CK](https://img.shields.io/badge/Framework-MITRE%20ATT%26CK-orange.svg)](https://attack.mitre.org/)
-[![Status: Contained & Eradicated](https://img.shields.io/badge/Status-Contained%20%26%20Eradicated-brightgreen.svg)](https://github.com/)
+# Payroll Phishing Campaign Investigation
 
 ---
 
