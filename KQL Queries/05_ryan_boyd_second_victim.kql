@@ -1,0 +1,19 @@
+// ============================================================================
+// Task 1: Second Victim Forensic Deep-Dive (Ryan Boyd)
+// Purpose: Confirm credential submission and build full attacker activity timeline
+//          for ryan.boyd@cloudora.io across message trace and sign-in logs.
+// Tables:  CloudoraMsgTrace_CL, CloudoraSignIn_CL
+// ============================================================================
+
+// Part A: Confirm Click and Credential Submission in Message Trace
+CloudoraMsgTrace_CL
+| where EventType =~ "click" and RecipientAddress =~ "ryan.boyd@cloudora.io"
+| extend SubmittedCredentials = tostring(CredentialsSubmitted)
+| project TimeGenerated, Campaign, ClickIP, Url, SubmittedCredentials
+
+// Part B: Build Full Sign-In Timeline for Ryan Boyd
+CloudoraSignIn_CL
+| where UserPrincipalName =~ "ryan.boyd@cloudora.io"
+| extend IsSuccessful = (ResultType == "0")
+| project TimeGenerated, AppDisplayName, IPAddress, Location = strcat(City, ", ", Country), Device = strcat(DeviceOS, " / ", Browser), ResultType
+| order by TimeGenerated asc

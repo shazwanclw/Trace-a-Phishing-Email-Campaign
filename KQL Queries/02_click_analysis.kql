@@ -1,0 +1,18 @@
+// ============================================================================
+// Step 6c: Identify All Users Who Clicked the Phishing Links
+// Purpose: Filter telemetry for click events across both phishing variants,
+//          recording timestamps, URLs accessed, client IPs, and credential submissions.
+// Table:   CloudoraMsgTrace_CL
+// ============================================================================
+
+// Query 1: All recipients who clicked the link (chronological order)
+CloudoraMsgTrace_CL
+| where EventType == "Click"
+| project TimeGenerated, RecipientAddress, Campaign, Url, ClickIP, CredentialsSubmitted
+| order by TimeGenerated asc
+
+// Query 2: High-priority credential submitters only
+CloudoraMsgTrace_CL
+| where EventType == "Click" and CredentialsSubmitted == "Yes"
+| project TimeGenerated, RecipientAddress, Campaign, Url, ClickIP
+| order by TimeGenerated asc

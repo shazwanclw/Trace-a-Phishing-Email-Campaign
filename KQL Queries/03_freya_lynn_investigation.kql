@@ -1,0 +1,15 @@
+// ============================================================================
+// Step 6d: Investigate Credential Submitters (Victim 1 - Freya Lynn)
+// Purpose: Correlate credential submissions with Entra ID sign-in telemetry
+//          to detect unauthorized account access following credential harvest.
+// Tables:  CloudoraMsgTrace_CL, CloudoraSignIn_CL
+// ============================================================================
+
+let CredVictims = CloudoraMsgTrace_CL
+    | where EventType == "Click" and CredentialsSubmitted == "Yes"
+    | distinct RecipientAddress;
+CloudoraSignIn_CL
+| where UserPrincipalName in (CredVictims)
+| where ResultType == "0"
+| project TimeGenerated, UserPrincipalName, AppDisplayName, IPAddress, City, Country, DeviceOS, Browser
+| order by UserPrincipalName asc, TimeGenerated asc

@@ -1,0 +1,16 @@
+// ============================================================================
+// Task 2: Near-Miss Recipient Scoping
+// Purpose: Identify all users who had phishing emails delivered to their inboxes
+//          but did NOT click the malicious link. Used for security awareness & comms.
+// Table:   CloudoraMsgTrace_CL
+// ============================================================================
+
+CloudoraMsgTrace_CL
+| where EventType == "Delivery" and DeliveryAction == "Delivered"
+| distinct RecipientAddress
+| join kind=leftanti (
+    CloudoraMsgTrace_CL
+    | where EventType == "Click"
+    | distinct RecipientAddress
+) on RecipientAddress
+| sort by RecipientAddress asc

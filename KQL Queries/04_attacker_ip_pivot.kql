@@ -1,0 +1,12 @@
+// ============================================================================
+// Step 6e: Pivot on Attacker Ingress IP Address (198.18.7.200)
+// Purpose: Uncover all accounts accessed by the attacker infrastructure
+//          regardless of initial reported tickets.
+// Table:   CloudoraSignIn_CL
+// ============================================================================
+
+CloudoraSignIn_CL
+| where IPAddress startswith "198.18.7." and ResultType == "0"
+| summarize FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated),
+            Apps = make_set(AppDisplayName) by UserPrincipalName, IPAddress, Country
+| order by FirstSeen asc

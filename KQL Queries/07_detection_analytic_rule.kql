@@ -1,0 +1,25 @@
+// ============================================================================
+// Task 4: SIEM Detection Analytic Rule
+// Rule Title:   Cloudora - Anomalous Foreign Sign-in Post Phishing Interaction
+// Severity:     High
+// MITRE ATT&CK: Initial Access (T1566.002, T1078.004), Credential Access (T1598.003)
+// Description:  Correlates email phishing link click events with rapid cross-border
+//               or unauthorized country authentications within a 4-hour window.
+// Tables:       CloudoraMsgTrace_CL, CloudoraSignIn_CL
+// ============================================================================
+
+let AlertWindow = 4h;
+let AuthorizedCountries = dynamic(["United Kingdom", "United States"]);
+
+CloudoraMsgTrace_CL
+| where EventType =~ "Click"
+| project ClickTimestamp = TimeGenerated, TargetUser = tolower(RecipientAddress), PhishURL = Url, SourceClickIP = ClickIP
+| join kind=inner (
+    CloudoraSignIn_CL
+    | where ResultType == "0"
+    | project AuthTimestamp = TimeGenerated, TargetUser = tolower(UserPrincipalName), IngressIP = IPAddress, Country, DeviceOS, Browser, AppDisplayName
+) on TargetUser
+| where AuthTimestamp between (ClickTimestamp .. (ClickTimestamp + AlertWindow))
+| where IngressIP != SourceClickIP
+| where Country !in (AuthorizedCountries)
+| project TargetUser, ClickTimestamp, AuthTimestamp, DeltaMinutes = datetime_diff('minute', AuthTimestamp, ClickTimestamp), SourceClickIP, IngressIP, Country, DeviceOS, Browser, AppDisplayName, PhishURL

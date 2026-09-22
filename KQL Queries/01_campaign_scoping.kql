@@ -1,0 +1,12 @@
+// ============================================================================
+// Step 6a: Scope the Phishing Campaign
+// Purpose: Identify all incoming delivery events, sending infrastructure,
+//          authentication verdicts (SPF, DKIM, DMARC), and delivery actions.
+// Table:   CloudoraMsgTrace_CL
+// ============================================================================
+
+CloudoraMsgTrace_CL
+| where EventType == "Delivery"
+| summarize Messages = count(), Recipients = dcount(RecipientAddress)
+    by Campaign, SenderAddress, SenderIP, SPFResult, DKIMResult, DMARCResult, DeliveryAction
+| order by Campaign asc, SenderIP asc
